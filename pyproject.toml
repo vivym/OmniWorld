@@ -1,0 +1,91 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "omni-world"
+dynamic = ["version"]
+description = "OmniWorld"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "./LICENSE" }
+keywords = ["Robotics"]
+authors = [
+    { name = "Ming Yang", email = "ymviv@qq.com" },
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: Implementation :: CPython",
+]
+dependencies = [
+    "semver>=3.0.2",
+    "GitPython>=3.1.43",
+]
+
+
+[project.urls]
+Documentation = "https://github.com/vivym/OmniWorld#readme"
+Issues = "https://github.com/vivym/OmniWorld/issues"
+Source = "https://github.com/vivym/OmniWorld"
+
+
+[tool.setuptools.dynamic]
+version = { attr = "omni_world.__version__" }
+
+
+[tool.isort]
+py_version = 310
+line_length = 120
+group_by_package = true
+
+# Files to skip
+skip_glob = ["docs/*", "logs/*", "_isaac_sim/*", "_isaac_lab/*", ".vscode/*"]
+
+# Order of imports
+sections = [
+    "FUTURE",
+    "STDLIB",
+    "THIRDPARTY",
+    "ASSETS_FIRSTPARTY",
+    "FIRSTPARTY",
+    "EXTRA_FIRSTPARTY",
+    "LOCALFOLDER",
+]
+
+
+[tool.pyright]
+include = ["src/omni_world"]
+exclude = [
+    "**/__pycache__",
+    "**/_isaac_sim",
+    "**/_isaac_lab",
+    "**/docs",
+    "**/logs",
+    ".git",
+    ".vscode",
+]
+
+typeCheckingMode = "basic"
+pythonVersion = "3.10"
+pythonPlatform = "Linux"
+enableTypeIgnoreComments = true
+
+# This is required as the CI pre-commit does not download the module (i.e. numpy, torch, prettytable)
+# Therefore, we have to ignore missing imports
+reportMissingImports = "none"
+# This is required to ignore for type checks of modules with stubs missing.
+reportMissingModuleSource = "none" # -> most common: prettytable in mdp managers
+
+reportGeneralTypeIssues = "none"       # -> raises 218 errors (usage of literal MISSING in dataclasses)
+reportOptionalMemberAccess = "warning" # -> raises 8 errors
+reportPrivateUsage = "warning"
+
+
+[tool.codespell]
+skip = '*.usd,*.svg,*.png,_isaac_lab*,*.bib,*.css,*/_build'
+quiet-level = 0
+# the world list should always have words in lower case
+ignore-words-list = "haa,slq,collapsable,buss"
